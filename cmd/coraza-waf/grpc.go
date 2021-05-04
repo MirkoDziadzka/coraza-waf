@@ -313,10 +313,8 @@ func (s grpcHandler) Create(ctx context.Context, req *grpc.NewTransaction) (*grp
 	tx.SetRequestLine(req.Method, req.Protocol, req.Uri)
 	tx.SetRemoteAddress(req.RequestAddr, int(req.RequestPort))
 
-	if req.Evaluate {
-		log.Debug("Evaluating transaction " + tx.Id)
-		tx.ExecutePhase(1)
-	}
+	log.Debug("Evaluating transaction " + tx.Id)
+	tx.ExecutePhase(1)
 	transactions.Set(tx.Id, tx)
 	return txToStatus(tx), nil
 }
@@ -330,9 +328,7 @@ func (s grpcHandler) SetRequestBody(ctx context.Context, req *grpc.NewRequestBod
 	if err != nil {
 		return nil, err
 	}
-	if req.Evaluate {
-		tx.ExecutePhase(2)
-	}
+	tx.ExecutePhase(2)
 	return txToStatus(tx), nil
 }
 
@@ -343,9 +339,7 @@ func (s grpcHandler) SetResponseHeaders(ctx context.Context, req *grpc.NewRespon
 	}
 	tx.SetResponseStatus(int(req.Status))
 	tx.SetResponseHeaders(headersToCollection(req.ResponseHeaders))
-	if req.Evaluate {
-		tx.ExecutePhase(3)
-	}
+	tx.ExecutePhase(3)
 	return txToStatus(tx), nil
 }
 
@@ -355,9 +349,6 @@ func (s grpcHandler) SetResponseBody(ctx context.Context, req *grpc.NewResponseB
 		return nil, err
 	}
 	tx.SetResponseBody(req.Body, int64(len(req.Body)))
-	if req.Evaluate {
-		tx.ExecutePhase(4)
-	}
 	tx.ExecutePhase(5)
 	status := txToStatus(tx)
 	transactions.Remove(tx.Id)

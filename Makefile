@@ -41,6 +41,7 @@ skipper-filter:
 install:
 		# only for debian by now
 		mkdir -p ${DESTDIR}${CORDIR}/profiles/default
+		mkdir -p ${DESTDIR}${CORDIR}/services
 		mkdir -p ${DESTDIR}${CORDIR}/crs
 		mkdir -p ${DESTDIR}${OPTDIR}/log/audit
 		mkdir -p ${DESTDIR}${OPTDIR}/run
@@ -60,6 +61,7 @@ install:
 		cp scripts/debian/coraza-waf.service ${DESTDIR}/etc/systemd/system/
 		cp scripts/coraza-ctl.sh ${DESTDIR}${OPTDIR}/bin/coraza-ctl
 		cp examples/rpc/rpc.yaml ${DESTDIR}${CORDIR}/
+		cp examples/rpc/service.yaml ${DESTDIR}${CORDIR}/services/default.yaml
 		cp examples/skipper/skipper.yaml ${DESTDIR}${CORDIR}/
 		cp examples/skipper/default.conf ${DESTDIR}${CORDIR}/profiles/default/rules.conf
 		chown -R coraza-waf:root ${DESTDIR}${OPTDIR}/log || true

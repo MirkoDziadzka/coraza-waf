@@ -1,5 +1,5 @@
 key: test-profile
-profile: /etc/coraza-waf/profiles/test/test.conf
+profile: /etc/coraza-waf/profiles/default/default.conf
 config:
   argument_separator: '&'
   default_actions: "pass"

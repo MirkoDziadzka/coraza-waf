@@ -666,8 +666,6 @@ func (tx *Transaction) ExecutePhase(phase int) bool {
 		usedRules++
 		if tx.Disrupted && phase != 5 {
 			log.Debug(fmt.Sprintf("Disrupted by rule %d", r.Id))
-			// TODO Maybe we shouldnt force phase 5?
-			tx.ExecutePhase(5)
 			break
 		}
 	}
@@ -675,6 +673,9 @@ func (tx *Transaction) ExecutePhase(phase int) bool {
 	tx.Mux.Lock()
 	tx.StopWatches[phase] = int(time.Now().UnixNano() - ts)
 	tx.Mux.Unlock()
+	if tx.Disrupted && phase != 5 {
+		tx.ExecutePhase(5)
+	}
 	if phase == 5 {
 		log.Trace(tx.DebugTransaction())
 		log.Debug("Saving persistent data")

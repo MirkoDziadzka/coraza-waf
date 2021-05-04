@@ -161,10 +161,12 @@ func (c *Crs) Build() error {
 	}
 	switch c.Mode {
 	case "strict":
-		buff = `SecDefaultAction "phase:1,log,auditlog,deny,status:403"` + "\n" + `SecDefaultAction "phase:2,log,auditlog,deny,status:403"` + "\n"
+		buff = `SecDefaultAction "phase:1,log,auditlog,deny,status:403"` + "\n" 
+		buff += `SecDefaultAction "phase:2,log,auditlog,deny,status:403"` + "\n"
 		break
 	case "scoring":
-		buff = `SecDefaultAction "phase:1,log,auditlog,pass"` + "\n" + `SecDefaultAction "phase:2,log,auditlog,pass"` + "\n"
+		buff = `SecDefaultAction "phase:1,log,auditlog,pass"` + "\n" 
+		buff += `SecDefaultAction "phase:2,log,auditlog,pass"` + "\n"
 		break
 	default:
 		buff = c.Mode + "\n"
@@ -173,7 +175,7 @@ func (c *Crs) Build() error {
 	if err != nil {
 		return err
 	}
-	buff = "SecAction \"id:900000,nolog,phase:1,t:none,"
+	buff = "SecAction \"id:900000,pass,nolog,phase:1,t:none,"
 	for k, v := range replace {
 		buff += fmt.Sprintf("setvar:tx.%s=%s,", k, v)
 	}
